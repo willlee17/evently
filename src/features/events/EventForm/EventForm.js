@@ -35,7 +35,7 @@ class EventForm extends Component {
     if(this.state.event.id) {
       this.props.updateEvent(this.state.event)
     } else {
-    this.props.createEvent(this.state.event)
+      this.props.createEvent(this.state.event)
     }
   }
 
