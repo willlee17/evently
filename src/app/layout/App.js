@@ -9,34 +9,41 @@ import UserDetailed from '../../features/user/UserDetailed/UserDetailed';
 import SettingsDashboard from '../../features/user/Settings/SettingsDashboard';
 import EventForm from '../../features/events/EventForm/EventForm';
 import Home from '../../features/home/Home';
+import TestComponent from  '../../features/testarea/TestComponent'
+import { Provider } from 'react-redux';
+import { configureStore } from '../store/configureStore'
 
+const store = configureStore();
 
 class App extends Component {
   render() {
     return (
-      <Router>
-        <div>
-          <Switch>
-            <Route exact path="/" component={Home}/>
-          </Switch>
-          <Route exact path="/(.+)" render={() => (
-            <div>
-              <Navbar />
-              <Container className="main">
-                <Switch>
-                  <Route path="/events" component={EventDashboard}/>
-                  <Route path="/event/:id" component={EventDetailed}/>
-                  <Route path="/people" component={PeopleDashboard}/>
-                  <Route path="/profile/:id" component={UserDetailed}/>
-                  <Route path="/settings" component={SettingsDashboard}/>
-                  <Route path="/createEvent" component={EventForm}/>
-                </Switch>
-              </Container>
-            </div>
-          )}
-        />
-        </div>
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <div>
+            <Switch>
+              <Route exact path="/" component={Home}/>
+            </Switch>
+            <Route exact path="/(.+)" render={() => (
+              <div>
+                <Navbar />
+                <Container className="main">
+                  <Switch>
+                    <Route path="/events" component={EventDashboard}/>
+                    <Route path="/event/:id" component={EventDetailed}/>
+                    <Route path="/people" component={PeopleDashboard}/>
+                    <Route path="/profile/:id" component={UserDetailed}/>
+                    <Route path="/settings" component={SettingsDashboard}/>
+                    <Route path="/createEvent" component={EventForm}/>
+                    <Route path="/test" component={TestComponent}/>
+                  </Switch>
+                </Container>
+              </div>
+            )}
+          />
+          </div>
+        </Router>
+      </Provider>
     );
   }
 }
