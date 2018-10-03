@@ -6,7 +6,7 @@ class SignedOutMenu extends Component {
     return (
       <Menu.Item position="right">
         <Button onClick={this.props.signIn} basic inverted content="Login"/>
-        <Button basic inverted content="Register"/>
+        <Button onClick={this.props.register} basic inverted content="Register"/>
       </Menu.Item>
     )
   }

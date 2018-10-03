@@ -3,26 +3,37 @@ import { Menu, Container, Button } from 'semantic-ui-react';
 import { NavLink, Link, withRouter } from 'react-router-dom';
 import SignedOutMenu from '../Menus/SignedOutMenu';
 import SignedInMenu from '../Menus/SignedInMenu';
+import  {connect} from 'react-redux';
+import { openModal } from '../../modals/modalActions';
+import { signOutUser} from '../../auth/authActions';
+
+const mapStateToProps = (state) => ({
+  auth: state.auth
+})
+
+const mapDispatchToProps = {
+  openModal,
+  signOutUser
+}
 
 class Navbar extends Component {
-  state = {
-    authenticated: false
+  handleSignIn = () => {
+    this.props.openModal('LoginModal')
   }
 
-  handleSignIn = () => {
-    this.setState({
-      authenticated: true
-    })
+  handleRegister = () => {
+    this.props.openModal('RegisterModal')
   }
 
   handleSignOut = () => {
-    this.setState({
-      authenticated: false
-    })
+    this.props.signOutUser()
     this.props.history.push('/')
   }
 
   render() {
+    const { auth } = this.props
+    const authenticated = auth.authenticated
+
     return(
       <Menu inverted fixed="top">
         <Container>
@@ -31,20 +42,20 @@ class Navbar extends Component {
             Evently
           </Menu.Item>
           <Menu.Item as={NavLink} to='/events' name="Events"/> {/* Semantic UI components can act as other components. In this case NavLink. The to="events" is part of NavLink and not Sematnic UI. amazing. */}
-          {this.state.authenticated && (
+          {authenticated && (
               <Menu.Item as={NavLink} to='/people' name="People"/>
           )}
-          {this.state.authenticated && (
+          {authenticated && (
             <Menu.Item>
               <Button as={Link} to='/createEvent' floated="right" positive inverted content="Create Event"/>
             </Menu.Item>
           )}
 
-          {this.state.authenticated ? (<SignedInMenu signOut={this.handleSignOut}/>) : (<SignedOutMenu signIn={this.handleSignIn}/>) }
+          {authenticated ? (<SignedInMenu signOut={this.handleSignOut} currentUser={auth.currentUser}/>) : (<SignedOutMenu signIn={this.handleSignIn} register={this.handleRegister}/>) }
         </Container>
       </Menu>
     )
   }
 }
 
-export default withRouter(Navbar);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));

@@ -12,8 +12,14 @@ import Home from '../../features/home/Home';
 import TestComponent from  '../../features/testarea/TestComponent'
 import { Provider } from 'react-redux';
 import { configureStore } from '../store/configureStore'
+import ModalManager from '../../features/modals/ModalManager';
+// import { loadEvents } from '../../features/events/eventActions.js';
+import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
+import ReduxToastr from 'react-redux-toastr';
 
 const store = configureStore();
+// store.dispatch(loadEvents()); I used this before I had firestore hooked up.
+//So I COULD do componentDidMount to get the initial data. but dispatching straight from the store is a good way to get initial data too.
 
 class App extends Component {
   render() {
@@ -21,6 +27,8 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div>
+            <ReduxToastr timeOut={2000} position="bottom-right" transitionIn="bounceIn" transitionOut="bounceOut" closeOnToastrClick={true}/>
+            <ModalManager/>
             <Switch>
               <Route exact path="/" component={Home}/>
             </Switch>
@@ -31,6 +39,7 @@ class App extends Component {
                   <Switch>
                     <Route path="/events" component={EventDashboard}/>
                     <Route path="/event/:id" component={EventDetailed}/>
+                    <Route path="/manage/:id" component={EventForm}/>
                     <Route path="/people" component={PeopleDashboard}/>
                     <Route path="/profile/:id" component={UserDetailed}/>
                     <Route path="/settings" component={SettingsDashboard}/>
@@ -39,8 +48,8 @@ class App extends Component {
                   </Switch>
                 </Container>
               </div>
-            )}
-          />
+              )}
+            />
           </div>
         </Router>
       </Provider>
