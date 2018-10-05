@@ -7,9 +7,11 @@ import { deleteEvent } from '../eventActions';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
 import EventActivity from '../EventActivity/EventActivity';
 import { firestoreConnect } from 'react-redux-firebase';
+//We use this to connect event dashboard with firestore through its bindings.
+//Look at the bottom of this file.
 
 const mapStateToProps = (state) => ({
-  events: state.events,
+  events: state.firestore.ordered.events,
   loading: state.async.loading,
 })
 
@@ -20,10 +22,6 @@ const mapDispatchToProps = {
 class EventDashboard extends Component {
 // DELETE
   handleDeleteEvent = (eventId) => () => {
-    // const updatedEvents = this.state.events.filter(event => event.id !== eventId);
-    // this.setState({
-    //   events: updatedEvents
-    // })
     this.props.deleteEvent(eventId)
   }
 
@@ -44,5 +42,5 @@ class EventDashboard extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-  firestoreConnect([{collection: "events"}])(EventDashboard)
+  firestoreConnect([{collection: "events"}])(EventDashboard) //Firestore is listening to "events". Every time our event changes, firestore is listening.
 );

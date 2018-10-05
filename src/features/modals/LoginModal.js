@@ -9,6 +9,7 @@ const mapDispatchToProps = {
   closeModal
 };
 
+
 class LoginModal extends Component {
     render() {
         return (

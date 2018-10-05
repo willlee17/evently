@@ -1,15 +1,17 @@
 import React from 'react';
-import { Form, Segment, Button } from 'semantic-ui-react';
+import { Form, Segment, Button, Label, Divider } from 'semantic-ui-react';
 import { Field, reduxForm } from 'redux-form';
 import TextInput from '../../../app/common/form/TextInput';
 import { connect } from 'react-redux';
-import { loginUser } from '../authActions';
+import { loginUser, socialLogin } from '../authActions';
+import SocialLogin from '../SocialLogin/SocialLogin';
 
 const mapDispatchToProps = {
-  loginUser
+  loginUser,
+  socialLogin,
 }
 
-const LoginForm = ({loginUser, handleSubmit}) => { //handleSubmit is from redux form
+const LoginForm = ({loginUser, handleSubmit, error, socialLogin}) => { //handleSubmit is from redux form
   return (
     <Form size="large" onSubmit={handleSubmit(loginUser)}>
       <Segment>
@@ -25,9 +27,12 @@ const LoginForm = ({loginUser, handleSubmit}) => { //handleSubmit is from redux 
           type="password"
           placeholder="password"
         />
+        {error && <Label basic color="red">{error}</Label>}
         <Button fluid size="large" color="teal">
           Login
         </Button>
+        <Divider horizontal> Or </Divider>
+        <SocialLogin socialLogin={socialLogin}/>
       </Segment>
     </Form>
   );

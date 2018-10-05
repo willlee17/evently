@@ -104,3 +104,8 @@ body {
   padding-bottom: 0 !important;
   padding-left: 2em !important;
 }
+
+/* Modals */
+.ui.mini.modal {
+  top: 20%;
+}

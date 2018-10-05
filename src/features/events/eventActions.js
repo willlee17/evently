@@ -51,6 +51,7 @@ export const fetchEvent = (events) => {
   }
 }
 
+// Originally hooked up to store.dispatch(loadEvents()) before we implememnted firestore
 export const loadEvents = () => {
   return async dispatch => {
     try {

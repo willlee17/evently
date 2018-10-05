@@ -5,15 +5,18 @@ import SignedOutMenu from '../Menus/SignedOutMenu';
 import SignedInMenu from '../Menus/SignedInMenu';
 import  {connect} from 'react-redux';
 import { openModal } from '../../modals/modalActions';
-import { signOutUser} from '../../auth/authActions';
+import { withFirebase } from 'react-redux-firebase';
+//To signout. Allows us to have firebase functionality. So you wrap this shit on the bottom again as a higher order function
+// If you go to react and then click on the Navbar component its going to have a firebase property.
 
 const mapStateToProps = (state) => ({
-  auth: state.auth
+  // auth: state.auth    //Now that we've implemented firebase authentication.
+  auth: state.firebase.auth,
+  profile: state.firebase.profile
 })
 
 const mapDispatchToProps = {
   openModal,
-  signOutUser
 }
 
 class Navbar extends Component {
@@ -26,13 +29,14 @@ class Navbar extends Component {
   }
 
   handleSignOut = () => {
-    this.props.signOutUser()
+    this.props.firebase.logout()
     this.props.history.push('/')
   }
 
   render() {
-    const { auth } = this.props
-    const authenticated = auth.authenticated
+    const { auth, profile } = this.props;
+    const authenticated = auth.isLoaded && !auth.isEmpty;
+     //To make sure the user is actually authenticated. Or if there's any authentication credentials at all.
 
     return(
       <Menu inverted fixed="top">
@@ -51,11 +55,11 @@ class Navbar extends Component {
             </Menu.Item>
           )}
 
-          {authenticated ? (<SignedInMenu signOut={this.handleSignOut} currentUser={auth.currentUser}/>) : (<SignedOutMenu signIn={this.handleSignIn} register={this.handleRegister}/>) }
+          {authenticated ? (<SignedInMenu signOut={this.handleSignOut} profile={profile}/>) : (<SignedOutMenu signIn={this.handleSignIn} register={this.handleRegister}/>) }
         </Container>
       </Menu>
     )
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));
+export default withRouter(withFirebase(connect(mapStateToProps, mapDispatchToProps)(Navbar)));
