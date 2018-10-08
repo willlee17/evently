@@ -10,6 +10,8 @@ import { compose } from 'redux';
 import { objectToArray, createDataTree } from '../../../app/common/util/helpers';
 import { goingToEvent, cancelGoingToEvent } from '../../user/userActions';
 import { addEventComment } from '../eventActions';
+import { toastr } from 'react-redux-toastr';
+import { openModal } from '../../modals/modalActions';
 
 const mapStateToProps = (state, ownProps) => {
   let event={};
@@ -28,7 +30,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = {
   goingToEvent,
   cancelGoingToEvent,
-  addEventComment
+  addEventComment,
+  openModal,
 }
 
 class EventDetailed extends Component {
@@ -36,6 +39,11 @@ class EventDetailed extends Component {
     const { firestore, match } = this.props;
     // let event = await firestore.get(`events/${match.params.id}`);
     // If we leave this as firestore.get. The user will not experience immediately when he clicks on going to event.
+    let event = await firestore.get(`events/${match.params.id}`); //this returns a document shapshot
+    if (!event.exists) {
+      toastr.error("Not Found", "This event does not exist")
+      this.props.history.push('/error');
+    }
     await firestore.setListener(`events/${match.params.id}`);
   }
 
@@ -45,18 +53,23 @@ class EventDetailed extends Component {
   }
 
   render() {
-    const { event, auth, goingToEvent, cancelGoingToEvent, addEventComment, eventChat } = this.props;
-    const attendees = event && event.attendees && objectToArray(event.attendees);
+    const { event, auth, goingToEvent, cancelGoingToEvent, addEventComment, eventChat, openModal } = this.props;
+    const attendees = event && event.attendees && objectToArray(event.attendees).sort(function(a,b) {
+      return a.joinDate - b.joinDate;
+    });
     const isHost = event.hostUid === auth.uid;
     const isGoing = attendees && attendees.some(a => a.id === auth.uid); //So if user is already an attendee this will turn out true. If not, false.
     const chatTree = !isEmpty(eventChat) && createDataTree(eventChat)
+    const authenticated = auth.isLoaded && !auth.isEmpty;
 
     return (
       <Grid>
         <Grid.Column width={10}>
-          <EventDetailedHeader event={event} isHost={isHost} isGoing={isGoing} goingToEvent={goingToEvent} cancelGoingToEvent={cancelGoingToEvent}/>
+          <EventDetailedHeader event={event} isHost={isHost} isGoing={isGoing} goingToEvent={goingToEvent} cancelGoingToEvent={cancelGoingToEvent} authenticated={authenticated} openModal={openModal}/>
           <EventDetailedInfo event={event}/>
-          <EventDetailedChat addEventComment={addEventComment} eventId={event.id} eventChat={chatTree}/>
+          {authenticated && (
+            <EventDetailedChat addEventComment={addEventComment} eventId={event.id} eventChat={chatTree}/>
+          )}
         </Grid.Column>
         <Grid.Column width={6}>
             <EventDetailedSidebar attendees={attendees}/>
@@ -69,5 +82,5 @@ class EventDetailed extends Component {
 export default compose(
   withFirestore,
   connect(mapStateToProps, mapDispatchToProps),
-  firebaseConnect((props) => ([`event_chat/${props.match.params.id}`]))
+  firebaseConnect((props) => props.auth.isLoaded && !props.auth.isEmpty && ([`event_chat/${props.match.params.id}`]))
 )(EventDetailed);

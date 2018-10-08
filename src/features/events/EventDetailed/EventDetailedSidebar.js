@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 class EventDetailedSidebar extends Component {
   render() {
     const { attendees } = this.props;
-    const isHost = false;
 
     return (
       <div>
@@ -23,7 +22,7 @@ class EventDetailedSidebar extends Component {
         <List relaxed divided>
           {attendees && attendees.map(attendee => (
             <Item key={attendee.id} style={{ position: 'relative' }}>
-              {isHost &&
+              {attendee.host &&
               <Label
                 style={{ position: 'absolute' }}
                 color="orange"

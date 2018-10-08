@@ -10,6 +10,7 @@ import UserDetailedSidebar from './UserDetailedSidebar';
 import UserDetailedEvents from './UserDetailedEvents';
 import { userDetailedQuery } from '../userQueries';
 import { getUserEvents } from '../userActions';
+import { toastr } from 'react-redux-toastr';
 
 const mapStateToProps = (state, ownProps) => {
   let userUid = null;
@@ -38,6 +39,11 @@ const mapDispatchToProps = {
 
 class UserDetailedPage extends Component {
   async componentDidMount() {
+    let user = await this.props.firestore.get(`users/${this.props.match.params.id}`)
+    if(!user.exists) {
+      toastr.error("Not Found", "This is not a valid user");
+      this.props.history.push('/error');
+    }
     let events = await this.props.getUserEvents(this.props.userUid);
     console.log(events)
   }

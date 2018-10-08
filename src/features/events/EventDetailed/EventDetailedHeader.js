@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Image, Item, Header, Button } from 'semantic-ui-react';
+import { Segment, Image, Item, Header, Button, Label } from 'semantic-ui-react';
 import { Link } from 'react-router-dom'
 import format from 'date-fns/format';
 
@@ -20,7 +20,7 @@ const eventImageTextStyle = {
 class EventDetailedHeader extends Component {
   render() {
 
-    const { event, isHost, isGoing, goingToEvent, cancelGoingToEvent } = this.props;
+    const { event, isHost, isGoing, goingToEvent, cancelGoingToEvent, authenticated, openModal } = this.props;
     let eventDate;
     if (event.date) {
       eventDate = event.date.toDate();
@@ -53,10 +53,17 @@ class EventDetailedHeader extends Component {
           <Segment attached="bottom">
             {!isHost && (
               <div>
-                {isGoing ? (
-                <Button onClick={() => cancelGoingToEvent(event)}>Cancel My Place</Button>
-              ) : (
-                <Button color="teal" onClick={() => goingToEvent(event)}>JOIN THIS EVENT</Button>
+                {isGoing && !event.cancelled && <Button onClick={() => cancelGoingToEvent(event)}>Cancel My Place</Button>}
+
+                {!isGoing && authenticated && !event.cancelled &&
+                  <Button color="teal" onClick={() => goingToEvent(event)}>JOIN THIS EVENT</Button>
+                }
+                {!authenticated && !event.cancelled &&
+                  <Button color="teal" onClick={() => openModal("UnauthModal")}>JOIN THIS EVENT</Button>
+                }
+
+              {event.cancelled && !isHost && (
+                  <Label size="large" color="red" content="This event has been canceled"/>
               )}
               </div>
             )}
