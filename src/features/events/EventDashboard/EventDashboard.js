@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Grid  } from 'semantic-ui-react';
+import { Grid, Button, Loader  } from 'semantic-ui-react';
 import EventList from '../EventList/EventList';
 import EventForm from '../EventForm/EventForm';
 import { connect } from 'react-redux'
-import { deleteEvent } from '../eventActions';
+import {  getEventsForDashboard } from '../eventActions';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
 import EventActivity from '../EventActivity/EventActivity';
 import { firestoreConnect } from 'react-redux-firebase';
@@ -11,30 +11,73 @@ import { firestoreConnect } from 'react-redux-firebase';
 //Look at the bottom of this file.
 
 const mapStateToProps = (state) => ({
-  events: state.firestore.ordered.events,
+  // events: state.firestore.ordered.events,
+  // how events was mapped before querying
+  events: state.events,
   loading: state.async.loading,
 })
 
 const mapDispatchToProps = {
-  deleteEvent,
+  getEventsForDashboard
 }
 
 class EventDashboard extends Component {
-// DELETE
-  handleDeleteEvent = (eventId) => () => {
-    this.props.deleteEvent(eventId)
+  state = {
+    moreEvents: false,
+    loadingInitial: true,
+    loadedEvents: [],
   }
 
+  async componentDidMount() {
+    let next = await this.props.getEventsForDashboard();
+    console.log(next)
+    if (next && next.docs && next.docs.length > 1) {
+      this.setState({
+        moreEvents: true,
+        loadingInitial: false,
+      })
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(this.props.events !== nextProps.events) {
+      this.setState({
+        loadedEvents: [...this.state.loadedEvents, ...nextProps.events]
+      })
+    }
+  }
+
+  getNextEvents = async () => {
+    const { events } = this.props;
+    let lastEvent = events && events[events.length-1];
+    console.log(lastEvent)
+
+    let next = await this.props.getEventsForDashboard(lastEvent);
+    console.log(next)
+
+    if (next && next.docs && next.docs.length <= 1) {
+      this.setState({
+        moreEvents: false
+      })
+    }
+  }
+
+
   render() {
-    const { events, loading } = this.props;
-    if (loading) return <LoadingComponent />
+    const { loading } = this.props;
+    const { moreEvents, loadedEvents} = this.state;
+    if (this.state.loadingInitial) return <LoadingComponent />
     return(
       <Grid>
         <Grid.Column width={10}>
-          <EventList events={events} deleteEvent={this.handleDeleteEvent}/>
+          <EventList loading={loading} moreEvents={moreEvents} events={loadedEvents} getNextEvents={this.getNextEvents}/>
+          {/* <Button onClick={this.getNextEvents} disabled={!this.state.moreEvents} loading={loading} content="More Events" color="green" floated="right"/> */}
         </Grid.Column>
         <Grid.Column width={6}>
           <EventActivity />
+        </Grid.Column>
+        <Grid.Column width={10}>
+          <Loader active={loading} />
         </Grid.Column>
       </Grid>
     )

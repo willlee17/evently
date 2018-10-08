@@ -4,7 +4,7 @@ import { toastr } from 'react-redux-toastr';
 
 // This is the updated login action where I finally implemented login with firebase. Notice how I don't even call the reducer anymore.
 export const loginUser = (creds) => {
-  return async (dispatch, getState, {getFirebase}) => { //getFirebase comes form redux-thunk(???). Authentication is also with getFirebase and not getFirestore.
+  return async (dispatch, getState, {getFirebase}) => { // Authentication is also with getFirebase and not just getFirestore.
     const firebase = getFirebase();
     try {
         await firebase.auth().signInWithEmailAndPassword(creds.email, creds.password);

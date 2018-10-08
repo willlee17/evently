@@ -7,6 +7,7 @@ import 'semantic-ui-css/semantic.min.css';
 import { configureStore } from './app/store/configureStore';
 
 const store = configureStore();
+
 store.firebaseAuthIsReady.then(() => {
   ReactDOM.render(<App store={store}/>, document.getElementById('root'));
 })

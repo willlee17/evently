@@ -4,6 +4,8 @@ import { fetchSampleData } from '../../app/data/mockApi';
 import { toastr } from 'react-redux-toastr';
 import { createNewEvent } from '../../app/common/util/helpers';
 import moment from 'moment';
+import firebase from '../../app/config/firebase'; //To get access to firebase API directly instead of going thru firestore
+
 
 export const createEvent = (event) => {
   return async (dispatch, getState, {getFirestore}) => {
@@ -61,16 +63,16 @@ export const cancelToggle = (cancelled, eventId) => async (dispatch, getState, {
     console.log(error)
   }
 }
-
-
-export const deleteEvent = (eventId) => {
-  return {
-    type: DELETE_EVENT,
-    payload: {
-      eventId
-    }
-  }
-}
+//
+//
+// export const deleteEvent = (eventId) => {
+//   return {
+//     type: DELETE_EVENT,
+//     payload: {
+//       eventId
+//     }
+//   }
+// }
 
 export const fetchEvent = (events) => {
   return {
@@ -80,17 +82,86 @@ export const fetchEvent = (events) => {
 }
 
 // Originally hooked up to store.dispatch(loadEvents()) before we implememnted firestore
-export const loadEvents = () => {
-  return async dispatch => {
-    try {
-      dispatch(asyncActionStart())
-      let events = await fetchSampleData();
-      dispatch (fetchEvent(events))
-      dispatch(asyncActionFinish())
-    }
-    catch (error) {
-      console.log(error)
-      dispatch(asyncActionError())
-    }
+// export const loadEvents = () => {
+//   return async dispatch => {
+//     try {
+//       dispatch(asyncActionStart())
+//       let events = await fetchSampleData();
+//       dispatch (fetchEvent(events))
+//       dispatch(asyncActionFinish())
+//     }
+//     catch (error) {
+//       console.log(error)
+//       dispatch(asyncActionError())
+//     }
+//   }
+// }
+
+export const getEventsForDashboard = (lastEvent) => async (dispatch, getState) => {
+  let today = new Date(Date.now());
+  const firestore = firebase.firestore();
+  //.where starts the query. first input is the field we want to query, then query parameter, then the value we want to query against
+  // What our events query looked like before we implemented pagination.
+  // const eventsQuery = firestore.collection('events').where('date', '>=', today);
+  const eventsRef = firestore.collection('events')
+   try {
+     dispatch(asyncActionStart())
+     // Check to see if lastEvent even exists. then we're going to get the last document and start at this last document for pagination.
+     let startAfter = lastEvent && await firestore.collection('events').doc(lastEvent.id).get();
+     let query;
+
+     // Also what I wrote before pagination
+     // let querySnap = await eventsQuery.get();
+
+     lastEvent ? (query = eventsRef.orderBy('date').where('date', ">=", today).startAfter(startAfter).limit(2))
+      : (query = eventsRef.orderBy('date').where('date', ">=", today).limit(2))
+
+      let querySnap = await query.get();
+
+      if (querySnap.docs.length === 0) {
+        dispatch(asyncActionFinish())
+        return querySnap;
+      }
+
+     let events = [];
+
+     for (let i = 0; i < querySnap.docs.length; i++) {
+       let event = {...querySnap.docs[i].data(), id: querySnap.docs[i].id}
+        //this will spread al of the fields from the .data method using the spread operator,
+        // and we also get the id of our document as well and store it into out event variable
+        events.push(event)
+     }
+     console.log(events) //Got all the events.
+     dispatch({
+       type: FETCH_EVENTS,
+       payload: {events}
+     })
+     dispatch(asyncActionFinish())
+     return querySnap;
+   }
+   catch (error) {
+     console.log(error)
+     dispatch(asyncActionError())
+   }
+}
+
+export const addEventComment = (eventId, values, parentId) => async (dispatch, getState, {getFirebase}) => {
+  const firebase = getFirebase();
+  const profile = getState().firebase.profile;
+  const user = firebase.auth().currentUser;
+  let newComment = {
+    parentId: parentId,
+    displayName: profile.displayName,
+    photoURL: profile.photoURL || '/assets/eventCategories/user.png',
+    uid: user.uid,
+    text: values.comment,
+    date: Date.now(),
+  }
+  try {
+    await firebase.push(`event_chat/${eventId}`, newComment)
+  }
+  catch (error) {
+    console.log(error)
+    toastr.error("Oops...", "Something went wrong...")
   }
 }
