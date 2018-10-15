@@ -1,11 +1,17 @@
 import moment from 'moment';
 
+export const objectToArray = ( object ) => {
+  if (object) {
+    return Object.entries(object).map(e => Object.assign(e[1], {id: e[0]})) //this takes the key and makes it into an id of the object.
+  }
+}
+
 export const createNewEvent = (user, photoURL, event) => {
   event.date = moment(event.date).toDate(); //this gives us a JS date.
   return {
     ...event,
-    hostedBy: user.displayName,
     hostUid: user.uid,
+    hostedBy: user.displayName,
     hostPhotoURL: photoURL || '/assets/user.png',
     created: Date.now(),
     attendees: {
@@ -17,12 +23,6 @@ export const createNewEvent = (user, photoURL, event) => {
           host: true
       }
     }
-  }
-}
-
-export const objectToArray = ( object ) => {
-  if (object) {
-    return Object.entries(object).map(e => Object.assign(e[1], {id: e[0]})) //this takes the key and makes it into an id of the object.
   }
 }
 

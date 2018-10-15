@@ -27,7 +27,9 @@ export const registerUser = (user) => async (dispatch, getState, {getFirebase, g
       // Create the user in auth
       let createdUser = await firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
       // update the auth profile
-      await firebase.auth().currentUser.displayName
+      await createdUser.updateProfile({
+        displayName: user.displayName
+      })
       // create a new profile in firestore
       let newUser = {
         uid: firebase.auth().currentUser.uid,

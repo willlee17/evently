@@ -25,9 +25,9 @@ const mapStateToProps = (state, ownProps) => {
   }
 
   return {
-    initialValues: event, //Somehow just including this made my update form have its values already filled...
+    initialValues: event, 
     event: event,
-  }                       // I'm pretty 99% sure its a part of redux form
+  }
 }
 
 const mapDispatchToProps = {
@@ -131,11 +131,7 @@ class EventForm extends Component {
         <Grid.Column width={10}>
           <Segment>
              <Form onSubmit={this.props.handleSubmit(this.onFormSubmit)}> {/*this.props.handleSubmit is a redux form method */}
-              {/* <Form.Field>
-                <label>Event Title</label>
-                <input value = {event.title} onChange={this.onInputChange} name="title" placeholder="First Name" />
-              </Form.Field> */}
-              {/* This becomes this below */}
+
               <Header sub color="teal" content="Event Details"/>
               <Field name="title" type="text" component={TextInput} placeholder="Give your event a name..."/>
               <Field name="description" type="text" component={TextArea} rows={3} placeholder="What is your event about..."/>

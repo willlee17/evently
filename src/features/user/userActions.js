@@ -100,12 +100,12 @@ export const goingToEvent = (event) => async (dispatch, getState, {getFirestore,
   const firestore = getFirestore();
   const firebase = getFirebase();
   const user = firebase.auth().currentUser;
-  const profile = getState().firebase.profile.photoURL; //We don't want photoURL from firestore.auth() above. We want it from firebase.profile which is technically our user's firetsore document.
+  const photoURL = getState().firebase.profile.photoURL; //We don't want photoURL from firestore.auth() above. We want it from firebase.profile which is technically our user's firetsore document.
   const attendee = { //this should match the data input titles in the firestore.
     going: true,
     joinDate: Date.now(),
-    photoURL: profile.photoURL || '/assets/user.png',
-    displayName: profile.displayName,
+    photoURL: photoURL || '/assets/user.png',
+    displayName: user.displayName,
     host: false
   }
   try {

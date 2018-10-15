@@ -30,7 +30,6 @@ class EventDashboard extends Component {
 
   async componentDidMount() {
     let next = await this.props.getEventsForDashboard();
-    console.log(next)
     if (next && next.docs && next.docs.length > 1) {
       this.setState({
         moreEvents: true,
@@ -66,7 +65,7 @@ class EventDashboard extends Component {
   render() {
     const { loading } = this.props;
     const { moreEvents, loadedEvents} = this.state;
-    if (this.state.loadingInitial) return <LoadingComponent />
+    // if (this.state.loadingInitial) return <LoadingComponent />
     return(
       <Grid>
         <Grid.Column width={10}>
