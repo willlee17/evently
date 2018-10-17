@@ -7,7 +7,7 @@ export const objectToArray = ( object ) => {
 }
 
 export const createNewEvent = (user, photoURL, event) => {
-  event.date = moment(event.date).toDate(); //this gives us a JS date.
+  event.date = moment(event.date).toDate(); // gives me a JS date that Firebase is cool with.
   return {
     ...event,
     hostUid: user.uid,

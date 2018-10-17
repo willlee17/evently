@@ -29,7 +29,7 @@ const mapDispatchToProps = {
 const mapStateToProps = (state) => ({
   auth: state.firebase.auth,
   profile: state.firebase.profile,
-  //this photos thing is possible after we used firestoreConnect and query().
+  //this photos thing is possible after linking firestoreConnect and query().
   photos: state.firestore.ordered.photos,
 })
 

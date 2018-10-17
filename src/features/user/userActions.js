@@ -11,11 +11,11 @@ export const updateProfile = (user) => async (dispatch, getState, {getFirebase})
 
 // Work with DateInput.js
   if (updatedUser.dateOfBirth !== getState().firebase.profile.dateOfBirth) {
-    updatedUser.dateOfBirth = moment(updatedUser.dateOfBirth).toDate(); //this converts our moment object into a JS date that firebase is happy with
+    updatedUser.dateOfBirth = moment(updatedUser.dateOfBirth).toDate(); //this converts the moment object into a JS date that firebase is happy with
   }
 
   try {
-    await firebase.updateProfile(updatedUser); //this comes form getFirebase() and affects the user in firestore.. This updateProfile is different from the one in authActions.
+    await firebase.updateProfile(updatedUser); //this comes form getFirebase() and affects the user in firestore as well as profile in firebase.. This updateProfile is different from the one in authActions.
     toastr.success("Success", "Profile updated!")
   }
   catch (error) {
@@ -42,7 +42,7 @@ export const uploadProfileImage = (file, fileName ) => async (dispatch, getState
     let userDoc = await firestore.get(`users/${user.uid}`);
     // Then check if the user alredy has a photo inside. If not, update profile with new image.
     if (!userDoc.data().photoURL) {
-      await firebase.updateProfile({ //this one updates the firestore document
+      await firebase.updateProfile({ //this one updates the user's document in  firestore document and profile in firebase
         photoURL: downloadURL
       })
       await user.updateProfile({ //this one updates the auth profile inside firebase authentication
@@ -66,11 +66,11 @@ export const uploadProfileImage = (file, fileName ) => async (dispatch, getState
 }
 
 export const deletePhoto = (photo) => async (dispatch, getState, {getFirebase, getFirestore}) => {
-  const firebase = getFirebase();
-  const firestore = getFirestore();
+  const firebase = getFirebase(); //to delete from storage
+  const firestore = getFirestore(); //to delete from firestore.
   const user = firebase.auth().currentUser;
   try {
-    await firebase.deleteFile(`${user.uid}/user_images/${photo.name}`)
+    await firebase.deleteFile(`${user.uid}/user_images/${photo.name}`) //deletes from storage
     await firestore.delete({
       collection: 'users',
       doc: user.uid,
@@ -86,8 +86,8 @@ export const deletePhoto = (photo) => async (dispatch, getState, {getFirebase, g
 export const setMainPhoto = (photo) => async (dispatch, getState, {getFirebase}) => {
   const firebase = getFirebase();
   try {
-    return await firebase.updateProfile({
-      photoURL: photo.url
+    return await firebase.updateProfile({ //once more, this updates the user profile in firestore. going to stay away from doing this in firebase auth because it takes time.
+      photoURL: photo.url                  //opting to just use firebase auth when I need user uids and checking if authentication is good.
     })
   }
   catch (error) {
@@ -100,7 +100,7 @@ export const goingToEvent = (event) => async (dispatch, getState, {getFirestore,
   const firestore = getFirestore();
   const firebase = getFirebase();
   const user = firebase.auth().currentUser;
-  const photoURL = getState().firebase.profile.photoURL; //We don't want photoURL from firestore.auth() above. We want it from firebase.profile which is technically our user's firetsore document.
+  const photoURL = getState().firebase.profile.photoURL; //Don't want photoURL from firestore.auth() above. We want it from firebase.profile which is technically our user's firetsore document.
   const attendee = { //this should match the data input titles in the firestore.
     going: true,
     joinDate: Date.now(),

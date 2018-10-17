@@ -23,7 +23,7 @@ const DateInput = ({
         {...rest}
         placeholderText={placeholder}
         selected={value ? moment(value) : null} //These are destructured from input above. Even onChange below.
-        onChange={onChange} //Note how we're using the redux form onCHange and not the one internal to DatePicker. Important.
+        onChange={onChange} //Note how im using the redux form onCHange and not the one internal to DatePicker. 
         onBlur={() => onBlur()}
         {...restInput}
       />

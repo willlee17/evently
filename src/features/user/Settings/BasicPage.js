@@ -39,7 +39,7 @@ class BasicPage extends Component {
                     />
                     <Field
                         name='city'
-                        placeholder='Home Town'
+                        placeholder='Current City'
                         options={{types: ['(cities)']}}
                         label='Female'
                         component={PlaceInput}

@@ -37,10 +37,9 @@ const mapDispatchToProps = {
 class EventDetailed extends Component {
   async componentDidMount() {
     const { firestore, match } = this.props;
-    // let event = await firestore.get(`events/${match.params.id}`);
-    // If we leave this as firestore.get. The user will not experience immediately when he clicks on going to event.
+
     let event = await firestore.get(`events/${match.params.id}`); //this returns a document shapshot
-    if (!event.exists) {
+    if (!event.exists) {    //found exists from the document snapshot when console logging event from above.
       toastr.error("Not Found", "This event does not exist")
       this.props.history.push('/error');
     }

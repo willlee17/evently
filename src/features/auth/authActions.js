@@ -2,7 +2,7 @@ import { closeModal } from '../modals/modalActions';
 import { SubmissionError, reset } from 'redux-form';
 import { toastr } from 'react-redux-toastr';
 
-// This is the updated login action where I finally implemented login with firebase. Notice how I don't even call the reducer anymore.
+// This is the updated login action where I finally implemented login with firebase. Reducers no longer necessary hehe.
 export const loginUser = (creds) => {
   return async (dispatch, getState, {getFirebase}) => { // Authentication is also with getFirebase and not just getFirestore.
     const firebase = getFirebase();
@@ -20,7 +20,7 @@ export const loginUser = (creds) => {
 }
 
 export const registerUser = (user) => async (dispatch, getState, {getFirebase, getFirestore})=> {
-//getFirebase to acces firebase authentication and firestore for the user profile which is where it's stored
+//getFirebase to acces firebase authentication and firestore for the user profile which is where users are stored
     const firebase = getFirebase();
     const firestore = getFirestore();
     try {
@@ -58,7 +58,7 @@ export const registerUser = (user) => async (dispatch, getState, {getFirebase, g
           provider: selectedProvider,
           type: "popup"
         })
-        // If we don't do below, firestore is going to show everything about a user. We only want these three things.
+        // If I don't do below, firestore is going to show everything about a user. We only want these three things.
         if(user.additionalUserInfo.isNewUser) {
           await firestore.set(`users/${user.user.uid}`, {
             displayName: user.profile.displayName,
@@ -66,7 +66,7 @@ export const registerUser = (user) => async (dispatch, getState, {getFirebase, g
             createdAt: firestore.FieldValue.serverTimestamp(),
           })
         }
-        // Wait but what if the user is not a new user? in configureStore, in rrfConfig, we set updateProfileOnLogin to false for that.
+        //If the user is not a new user, in configureStore, in rrfConfig, we set updateProfileOnLogin to false for that.
       }
       catch (error) {
         console.log(error)

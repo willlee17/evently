@@ -3,8 +3,8 @@ import { Form, Label, Select } from 'semantic-ui-react';
 
 const SelectInput = ({
   input,
-  multiple, //Notice this is what's different
-  options,  //Notice this is what's different
+  multiple, 
+  options,
   type,
   placeholder,
   meta: {

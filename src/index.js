@@ -12,20 +12,5 @@ store.firebaseAuthIsReady.then(() => {
   ReactDOM.render(<App store={store}/>, document.getElementById('root'));
 })
 
-// const store = configureStore();
-//
-// store.firebaseAuthIsReady.then(() => {
-//   ReactDOM.render(
-//     <Provider store={store}>
-//       <BrowserRouter>
-//         <ScrollToTop>
-//           <ReduxToastr position="bottom-right" transitionIn="fadeIn" transitionOut="fadeOut" />
-//           <App />
-//         </ScrollToTop>
-//       </BrowserRouter>
-//     </Provider>,
-//     document.getElementById('root')
-//   );
-// });
 
 registerServiceWorker();

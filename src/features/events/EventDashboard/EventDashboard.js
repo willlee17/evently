@@ -7,7 +7,7 @@ import {  getEventsForDashboard } from '../eventActions';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
 import EventActivity from '../EventActivity/EventActivity';
 import { firestoreConnect } from 'react-redux-firebase';
-//We use this to connect event dashboard with firestore through its bindings.
+//Use this to connect event dashboard with firestore through its bindings.
 //Look at the bottom of this file.
 
 const mapStateToProps = (state) => ({
@@ -65,12 +65,10 @@ class EventDashboard extends Component {
   render() {
     const { loading } = this.props;
     const { moreEvents, loadedEvents} = this.state;
-    // if (this.state.loadingInitial) return <LoadingComponent />
     return(
       <Grid>
         <Grid.Column width={10}>
           <EventList loading={loading} moreEvents={moreEvents} events={loadedEvents} getNextEvents={this.getNextEvents}/>
-          {/* <Button onClick={this.getNextEvents} disabled={!this.state.moreEvents} loading={loading} content="More Events" color="green" floated="right"/> */}
         </Grid.Column>
         <Grid.Column width={6}>
           <EventActivity />

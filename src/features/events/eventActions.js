@@ -11,10 +11,10 @@ export const createEvent = (event) => {
   return async (dispatch, getState, {getFirestore}) => {
     const firestore = getFirestore();
     const user = firestore.auth().currentUser;
-    const photoURL = getState().firebase.profile.photoURL;
+    const photoURL = getState().firebase.profile.photoURL; //Since users are already logged in. firebase.profile is available. I don't want to get photoURL from the one above.
     let newEvent = createNewEvent(user, photoURL, event);
     try {
-      let createdEvent = await firestore.add(`events`, newEvent) //.add will create a new ID for us.
+      let createdEvent = await firestore.add(`events`, newEvent) //.add will create a new ID.
       //Lookup table for future querying
       await firestore.set(`event_attendee/${createdEvent.id}_${user.uid}`, {
         eventId: createdEvent.id,
@@ -46,16 +46,16 @@ export const updateEvent = (event) => {
   }
 }
 
-export const cancelToggle = (cancelled, eventId) => async (dispatch, getState, {getFirestore}) => {
+export const cancelToggle = (canceled, eventId) => async (dispatch, getState, {getFirestore}) => {
   const firestore = getFirestore();
-  const message = cancelled
+  const message = canceled
     ? "Are you sure you want to cancel the event?"
     : "This will reactivate the event."
   try {
     toastr.confirm(message, {
       onOk: () =>
       firestore.update(`events/${eventId}`, {
-        cancelled: cancelled
+        canceled: canceled
       })
     })
   }
@@ -63,16 +63,7 @@ export const cancelToggle = (cancelled, eventId) => async (dispatch, getState, {
     console.log(error)
   }
 }
-//
-//
-// export const deleteEvent = (eventId) => {
-//   return {
-//     type: DELETE_EVENT,
-//     payload: {
-//       eventId
-//     }
-//   }
-// }
+
 
 export const fetchEvent = (events) => {
   return {
@@ -81,32 +72,16 @@ export const fetchEvent = (events) => {
   }
 }
 
-// Originally hooked up to store.dispatch(loadEvents()) before we implememnted firestore
-// export const loadEvents = () => {
-//   return async dispatch => {
-//     try {
-//       dispatch(asyncActionStart())
-//       let events = await fetchSampleData();
-//       dispatch (fetchEvent(events))
-//       dispatch(asyncActionFinish())
-//     }
-//     catch (error) {
-//       console.log(error)
-//       dispatch(asyncActionError())
-//     }
-//   }
-// }
-
 export const getEventsForDashboard = (lastEvent) => async (dispatch, getState) => {
   let today = new Date(Date.now());
   const firestore = firebase.firestore();
-  //.where starts the query. first input is the field we want to query, then query parameter, then the value we want to query against
-  // What our events query looked like before we implemented pagination.
+  //.where starts the query. first input is the field to query, then query parameter, then the value to query against
+  // What our events query looked like before the implemented pagination.
   // const eventsQuery = firestore.collection('events').where('date', '>=', today);
   const eventsRef = firestore.collection('events')
    try {
      dispatch(asyncActionStart())
-     // Check to see if lastEvent even exists. then we're going to get the last document and start at this last document for pagination.
+     // Check to see if lastEvent even exists. then get the last document and start at this last document for pagination.
      let startAfter = lastEvent && await firestore.collection('events').doc(lastEvent.id).get();
      let query;
 
@@ -128,7 +103,7 @@ export const getEventsForDashboard = (lastEvent) => async (dispatch, getState) =
      for (let i = 0; i < querySnap.docs.length; i++) {
        let event = {...querySnap.docs[i].data(), id: querySnap.docs[i].id}
         //this will spread al of the fields from the .data method using the spread operator,
-        // and we also get the id of our document as well and store it into out event variable
+        // and also get the id of our document as well and store it into the event variable
         events.push(event)
      }
      console.log(events) //Got all the events.

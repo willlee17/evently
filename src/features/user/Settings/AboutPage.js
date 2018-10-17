@@ -20,10 +20,9 @@ const AboutPage = ({ pristine, submitting, handleSubmit, updateProfile }) => {
   return (
     <Segment>
       <Header dividing size="large" content="About Me" />
-      <p>Complete your profile to get the most out of this site</p>
       <Form onSubmit={handleSubmit(updateProfile)}>
         <Form.Group inline>
-          <label>Tell us your status: </label>
+          <label>Relationship Status: </label>
           <Field name="status" component={RadioInput} type="radio" value="single" label="Single" />
           <Field
             name="status"
@@ -41,7 +40,7 @@ const AboutPage = ({ pristine, submitting, handleSubmit, updateProfile }) => {
           />
         </Form.Group>
         <Divider />
-        <label>Tell us about yourself</label>
+        <label>Tell us about yourself: </label>
         <Field name="about" component={TextArea} placeholder="About Me" />
         <Field
           name="interests"

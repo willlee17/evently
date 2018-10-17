@@ -25,7 +25,7 @@ const mapStateToProps = (state, ownProps) => {
   }
 
   return {
-    initialValues: event, 
+    initialValues: event,
     event: event,
   }
 }
@@ -149,7 +149,7 @@ class EventForm extends Component {
               </Button>
               <Button type="button" onClick={this.props.history.goBack}>Cancel</Button>
               {event.id && (
-                <Button type="button" color={event.cancelled ? "green" : "red"} floated="right" content={event.cancelled ? "Reactivate Event" : "Cancel Event"} onClick={() => cancelToggle(!event.cancelled, event.id)}/>
+                <Button type="button" color={event.canceled ? "green" : "red"} floated="right" content={event.canceled ? "Reactivate Event" : "Cancel Event"} onClick={() => cancelToggle(!event.canceled, event.id)}/>
               )}
             </Form>
           </Segment>

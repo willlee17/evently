@@ -12,6 +12,7 @@ import { updateProfile } from '../userActions';
 
 
 const mapStateToProps = (state) => ({
+  // Put this in here so updating password is conditional based on Google Login or email/password login
   providerId: state.firebase.auth.isLoaded && state.firebase.auth.providerData[0].providerId,
   user: state.firebase.profile,
 })
@@ -30,7 +31,6 @@ class SettingsDashboard extends Component {
         <Grid.Column width={12}>
           <Switch>
             <Redirect exact from="/settings" to="/settings/basic"/>
-            {/* <Route path='/settings/basic' component={BasicPage}/> */}
             <Route path='/settings/basic' render={() => <BasicPage initialValues={user} updateProfile={updateProfile}/>}/> {/*Has to be initialValues because its being passed into redux forms*/}
             <Route path='/settings/about' render={() => <AboutPage initialValues={user} updateProfile={updateProfile} />}/>
             <Route path='/settings/photos' component={PhotosPage}/>

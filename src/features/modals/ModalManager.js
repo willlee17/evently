@@ -5,7 +5,7 @@ import LoginModal from './LoginModal';
 import RegisterModal from './RegisterModal';
 import UnauthModal from './UnauthModal';
 
-// Every modal that we make, we put it in here. Modals sort of cover the entire app.
+
 const modalLookUp = {
   TestModal,
   LoginModal,

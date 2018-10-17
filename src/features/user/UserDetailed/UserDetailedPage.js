@@ -16,7 +16,7 @@ const mapStateToProps = (state, ownProps) => {
   let userUid = null;
   let profile = {};
 
-  if (ownProps.match.params.id === state.auth.uid) {
+  if (ownProps.match.params.id === state.firebase.auth.uid) {
     profile = state.firebase.profile
   } else {
     profile = !isEmpty(state.firestore.ordered.profile) && state.firestore.ordered.profile[0];
@@ -45,7 +45,6 @@ class UserDetailedPage extends Component {
       this.props.history.push('/error');
     }
     let events = await this.props.getUserEvents(this.props.userUid);
-    console.log(events)
   }
 
   changeTab = (event, data) => {
