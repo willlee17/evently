@@ -6,11 +6,9 @@ import SignedInMenu from '../Menus/SignedInMenu';
 import  {connect} from 'react-redux';
 import { openModal } from '../../modals/modalActions';
 import { withFirebase } from 'react-redux-firebase';
-//To signout. Allows us to have firebase functionality. So you wrap this shit on the bottom again as a higher order function
-// If you go to react and then click on the Navbar component its going to have a firebase property.
+//To signout. Allows navbar to have firebase functionality. So wrap this on the bottom again as a higher order function
 
 const mapStateToProps = (state) => ({
-  // auth: state.auth    //Now that we've implemented firebase authentication.
   auth: state.firebase.auth,
   profile: state.firebase.profile
 })
@@ -47,11 +45,8 @@ class Navbar extends Component {
           </Menu.Item>
           <Menu.Item as={NavLink} to='/events' name="Events"/> {/* Semantic UI components can act as other components. In this case NavLink. The to="events" is part of NavLink and not Sematnic UI. amazing. */}
           {authenticated && (
-              <Menu.Item as={NavLink} to='/people' name="People"/>
-          )}
-          {authenticated && (
             <Menu.Item>
-              <Button as={Link} to='/createEvent' floated="right" positive inverted content="Create Event"/>
+              <Button as={Link} to='/createEvent' floated="right"  inverted content="Create Event"/>
             </Menu.Item>
           )}
 

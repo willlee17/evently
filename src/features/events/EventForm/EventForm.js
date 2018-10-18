@@ -135,7 +135,7 @@ class EventForm extends Component {
               <Header sub color="teal" content="Event Details"/>
               <Field name="title" type="text" component={TextInput} placeholder="Give your event a name..."/>
               <Field name="description" type="text" component={TextArea} rows={3} placeholder="What is your event about..."/>
-              <Field name="category" type="text" component={SelectInput} options={category} multiple={true} placeholder="What is your event type..."/>
+              <Field name="category" type="text" component={SelectInput} options={category} multiple={false} placeholder="What is your event type..."/>
 
               <Header sub color="teal" content="Event Location Details"/>
               <Field name="city" type="text" component={PlaceInput} options={{types: ['(cities)']}} onSelect={this.handleCitySelect} placeholder="Which city is your event held in..."/>

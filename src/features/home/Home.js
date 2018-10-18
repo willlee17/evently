@@ -9,14 +9,14 @@ class Home extends Component {
               <h1 className="ui inverted stackable header">
                 <img
                   className="ui image massive"
-                  src="/assets/logo.png"
+                  src="/assets/h_logo.png"
                   alt="logo"
                 />
-                <div className="content">Re-vents</div>
+                <div className="content">Evently</div>
               </h1>
-              <h2>Do whatever you want to do</h2>
+              <h2>Create and Join Events!</h2>
               <div onClick={() => this.props.history.push('/events')} className="ui huge white inverted button">
-                Get Started
+                Let's Go!
                 <i className="right arrow icon" />
               </div>
             </div>

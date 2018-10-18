@@ -42,7 +42,7 @@ class EventListItem extends Component {
             </Segment>
             <Segment clearing>
               <span>{event.description}</span>
-               <Button as={Link} to={`/event/${event.id}`} color="teal" floated="right" content="View" />    {/*NO MORE onClick={openEvent(event)} */}
+               <Button inverted size="large" as={Link} to={`/event/${event.id}`} className="event-btn" floated="right" content="View" />    {/*NO MORE onClick={openEvent(event)} */}
             </Segment>
           </Segment.Group>
     )

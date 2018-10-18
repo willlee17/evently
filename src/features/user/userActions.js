@@ -7,9 +7,8 @@ import { FETCH_EVENTS } from '../events/eventConstants';
 
 export const updateProfile = (user) => async (dispatch, getState, {getFirebase}) => {
   const firebase = getFirebase();
-  const { isLoaded, isEmpty, ...updatedUser } = user; //the beauty here is that updatedUser is the user object except without the two props we don't want
+  const { isLoaded, isEmpty, ...updatedUser } = user;
 
-// Work with DateInput.js
   if (updatedUser.dateOfBirth !== getState().firebase.profile.dateOfBirth) {
     updatedUser.dateOfBirth = moment(updatedUser.dateOfBirth).toDate(); //this converts the moment object into a JS date that firebase is happy with
   }
@@ -34,10 +33,11 @@ export const uploadProfileImage = (file, fileName ) => async (dispatch, getState
   }
 
   try {
-    // Upload the file to firebase storage
+    dispatch(asyncActionStart());
+    // Upload the file to firebase's storage
     let uploadedFile = await firebase.uploadFile(path, file, null, options); //the file is the blob
     //get url of image from the snapshot.
-    let downloadURL = await uploadedFile.uploadTaskSnapshot.ref.getDownloadURL();
+    let downloadURL = await uploadedFile.uploadTaskSnapshot.downloadURL;
     // get userdoc from firestore.
     let userDoc = await firestore.get(`users/${user.uid}`);
     // Then check if the user alredy has a photo inside. If not, update profile with new image.
@@ -58,7 +58,10 @@ export const uploadProfileImage = (file, fileName ) => async (dispatch, getState
       name: imageName,
       url: downloadURL
     })
+    dispatch(asyncActionFinish());
   }
+
+
   catch (error) {
     console.log(error)
     throw new Error("Problem uploading photo...")

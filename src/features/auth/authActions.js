@@ -58,7 +58,7 @@ export const registerUser = (user) => async (dispatch, getState, {getFirebase, g
           provider: selectedProvider,
           type: "popup"
         })
-        // If I don't do below, firestore is going to show everything about a user. We only want these three things.
+        // If I don't do below, firestore is going to show everything about a user. Only want these 3 fields.
         if(user.additionalUserInfo.isNewUser) {
           await firestore.set(`users/${user.user.uid}`, {
             displayName: user.profile.displayName,
@@ -66,7 +66,7 @@ export const registerUser = (user) => async (dispatch, getState, {getFirebase, g
             createdAt: firestore.FieldValue.serverTimestamp(),
           })
         }
-        //If the user is not a new user, in configureStore, in rrfConfig, we set updateProfileOnLogin to false for that.
+        //If the user is not a new user, in configureStore, in rrfConfig, updateProfileOnLogin  is set to false for that.
       }
       catch (error) {
         console.log(error)

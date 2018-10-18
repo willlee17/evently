@@ -1,8 +1,8 @@
 body {
-  background-color: rgb(234, 234, 234) !important;
+  background-color: #F9F9F9 !important;
 }
 
-/*timepicker style*/
+/* Timepicker */
 .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list {
   padding-left: 0;
   padding-right: 0;
@@ -18,20 +18,18 @@ body {
 }
 
 
-/*home page styles*/
-
+/* Home Page */
 .masthead {
   background-image: linear-gradient(
-          135deg,
-          rgb(24, 42, 115) 0%,
-          rgb(33, 138, 174) 69%,
-          rgb(32, 167, 172) 89%
+          115deg,
+          #D65A72 0%,
+          #EF959D 59%,
+          #FCDDBC 95%
   ) !important;
 }
 
 .masthead.segment {
-  min-height: 700px;
-  padding: 1em 0 !important;
+  height: 100vh;
 }
 
 .masthead .ui.menu .ui.button,
@@ -59,51 +57,44 @@ body {
   border: none;
 }
 
-/*end home page styles*/
-
-/* navbar styles */
+/* Navbar  */
 
 .ui.menu .item img.logo {
   margin-right: 1.5em;
 }
 
-.ui.fixed.menu {
+.ui.inverted.top.fixed.menu {
   background-image: linear-gradient(
           135deg,
-          rgb(24, 42, 115) 0%,
-          rgb(33, 138, 174) 69%,
-          rgb(32, 167, 172) 89%
+          #D65A72 0%,
+          #EF959D 69%,
+          #FCDDBC 89%
   ) !important;
+   box-shadow: 0 8px 6px -6px #999
 }
 
-.ui.main.container,
-.main.segment {
-  margin-top: 7em;
+.ui.main.container, .main.segment {
+  margin-top: 6em;
 }
 
-.ui.center.aligned.segment.attendance-preview {
-  background-color: #f5f5f5;
-}
 
 .masthead .ui.menu .ui.button,
 .ui.menu a.ui.inverted.button {
   margin-left: 0.5em;
 }
 
-.ui.menu .item>img:not(.ui) {
-  margin-right: 1.5em !important;
+/* Events */
+.event-btn {
+  background-color: #D65A72 !important;
 }
 
-.ui.menu:not(.vertical) .item>.button {
-  margin-left: 0.5em;
-}
-
-/*chat comments*/
+/*Chat Comments*/
 
 .ui.comments .comment .comments {
   padding-bottom: 0 !important;
   padding-left: 2em !important;
 }
+
 
 /* Modals */
 .ui.mini.modal {

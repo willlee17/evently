@@ -10,11 +10,10 @@ class EventDetailedSidebar extends Component {
       <div>
       <Segment
         textAlign="center"
-        style={{ border: 'none' }}
+        style={{ border: 'none', backgroundColor: "#D65A72" }}
         attached="top"
         secondary
         inverted
-        color="teal"
       >
         {attendees && attendees.length} {attendees && attendees.length ===1 ? "Person" : "People"} Attending
       </Segment>
@@ -32,7 +31,7 @@ class EventDetailedSidebar extends Component {
                 Host
               </Label>
             }
-              <Item.Image size="tiny" src={attendee.photoURL} />
+              <Item.Image size="tiny" circular src={attendee.photoURL} />
               <Item.Content verticalAlign="middle">
                 <Item.Header as="h3">
                   <Link to={`/profile/${attendee.id}`}>{attendee.displayName}</Link>

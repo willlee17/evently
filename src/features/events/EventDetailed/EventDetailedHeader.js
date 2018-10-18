@@ -5,7 +5,8 @@ import format from 'date-fns/format';
 
 // Styles
 const eventImageStyle = {
-    filter: 'brightness(30%)',
+    filter: 'brightness(45%)',
+    height: "60vh"
 };
 
 const eventImageTextStyle = {
@@ -29,7 +30,7 @@ class EventDetailedHeader extends Component {
     return (
       <Segment.Group>
           <Segment basic attached="top" style={{ padding: '0' }}>
-            <Image src={`/assets/eventCategories/${event.category}.jpg`} alt="drinks" fluid style={eventImageStyle}/>
+            <Image src={`/assets/eventCategories/${event.category}.jpg`} fluid style={eventImageStyle}/>
 
             <Segment basic style={eventImageTextStyle}>
               <Item.Group>
@@ -56,10 +57,10 @@ class EventDetailedHeader extends Component {
                 {isGoing && !event.cancelled && <Button onClick={() => cancelGoingToEvent(event)}>Cancel My Place</Button>}
 
                 {!isGoing && authenticated && !event.cancelled &&
-                  <Button color="teal" onClick={() => goingToEvent(event)}>JOIN THIS EVENT</Button>
+                  <Button inverted className="event-btn" onClick={() => goingToEvent(event)}>Join!</Button>
                 }
                 {!authenticated && !event.cancelled &&
-                  <Button color="teal" onClick={() => openModal("UnauthModal")}>JOIN THIS EVENT</Button>
+                  <Button inverted className="event-btn" onClick={() => openModal("UnauthModal")}>Join!</Button>
                 }
 
               {event.cancelled && !isHost && (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Header, Item, Segment } from 'semantic-ui-react';
+import { Grid, Header, Item, Segment, Image } from 'semantic-ui-react';
 import differenceInYears from 'date-fns/difference_in_years';
 
 const UserDetailedHeader = ({profile}) => {
@@ -13,11 +13,7 @@ const UserDetailedHeader = ({profile}) => {
     <Grid.Column width={16}>
       <Segment>
         <Item.Group>
-          <Item.Image
-            avatar
-            size="small"
-            src={profile.photoURL || '/assets/user.png'}
-          />
+          <Item.Image size="medium" src={profile.photoURL || '/assets/user.png'} />
           <Item.Content verticalAlign="bottom">
             <Header as="h1">{profile.displayName}</Header>
             <Header as="h2">{profile.occupation}</Header>

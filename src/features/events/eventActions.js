@@ -75,9 +75,7 @@ export const fetchEvent = (events) => {
 export const getEventsForDashboard = (lastEvent) => async (dispatch, getState) => {
   let today = new Date(Date.now());
   const firestore = firebase.firestore();
-  //.where starts the query. first input is the field to query, then query parameter, then the value to query against
-  // What our events query looked like before the implemented pagination.
-  // const eventsQuery = firestore.collection('events').where('date', '>=', today);
+
   const eventsRef = firestore.collection('events')
    try {
      dispatch(asyncActionStart())
@@ -85,11 +83,8 @@ export const getEventsForDashboard = (lastEvent) => async (dispatch, getState) =
      let startAfter = lastEvent && await firestore.collection('events').doc(lastEvent.id).get();
      let query;
 
-     // Also what I wrote before pagination
-     // let querySnap = await eventsQuery.get();
-
      lastEvent ? (query = eventsRef.orderBy('date').where('date', ">=", today).startAfter(startAfter).limit(2))
-      : (query = eventsRef.orderBy('date').where('date', ">=", today).limit(2))
+      : (query = eventsRef.orderBy('date').where('date', ">=", today).limit(2)) //what happens on initial load where there is no lastevent.
 
       let querySnap = await query.get();
 
@@ -106,7 +101,6 @@ export const getEventsForDashboard = (lastEvent) => async (dispatch, getState) =
         // and also get the id of our document as well and store it into the event variable
         events.push(event)
      }
-     console.log(events) //Got all the events.
      dispatch({
        type: FETCH_EVENTS,
        payload: {events}

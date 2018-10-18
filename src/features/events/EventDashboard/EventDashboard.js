@@ -29,7 +29,7 @@ class EventDashboard extends Component {
   }
 
   async componentDidMount() {
-    let next = await this.props.getEventsForDashboard();
+    let next = await this.props.getEventsForDashboard(); // returns the query snapshot
     if (next && next.docs && next.docs.length > 1) {
       this.setState({
         moreEvents: true,
@@ -49,10 +49,8 @@ class EventDashboard extends Component {
   getNextEvents = async () => {
     const { events } = this.props;
     let lastEvent = events && events[events.length-1];
-    console.log(lastEvent)
 
     let next = await this.props.getEventsForDashboard(lastEvent);
-    console.log(next)
 
     if (next && next.docs && next.docs.length <= 1) {
       this.setState({
@@ -82,5 +80,5 @@ class EventDashboard extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-  firestoreConnect([{collection: "events"}])(EventDashboard) //Firestore is listening to "events". Every time our event changes, firestore is listening.
+  firestoreConnect([{collection: "events"}])(EventDashboard) //Firestore is listening to "events". Every time the event changes, firestore is listening.
 );

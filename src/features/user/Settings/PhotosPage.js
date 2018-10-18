@@ -151,7 +151,6 @@ class PhotosPage extends Component {
                           </div>
                         }
                     </Grid.Column>
-
                 </Grid>
 
                 <Divider/>
@@ -164,9 +163,7 @@ class PhotosPage extends Component {
                     </Card>
                     {photos && filteredPhotos.map((photo) => (
                       <Card key={photo.id}>
-                          <Image
-                              src={photo.url}
-                          />
+                          <Image src={photo.url} />
                           <div className='ui two buttons'>
                               <Button onClick={this.handleSetMainPhoto(photo)} color='green'>Main</Button>
                               <Button onClick={this.handlePhotoDelete(photo)} basic icon='trash' color='red' />
