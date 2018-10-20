@@ -5,7 +5,7 @@ import format from 'date-fns/format';
 
 class EventDetailedInfo extends Component {
   state = {
-    showMap: true
+    showMap: false
   }
 
   componentWillUnmount() {
@@ -62,7 +62,7 @@ class EventDetailedInfo extends Component {
               </Grid.Column>
             </Grid>
           </Segment>
-          {this.state.showMap && event.venueLatLng &&
+          {this.state.showMap &&
             <EventDetailedMap lat={event.venueLatLng.lat} lng={event.venueLatLng.lng}/>
           }
         </Segment.Group>

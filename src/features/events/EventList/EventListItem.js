@@ -9,7 +9,7 @@ class EventListItem extends Component {
   render() {
     const { event } = this.props
     return(
-          <Segment.Group>
+          <Segment.Group  style={{boxShadow: "0px 0px 5px #888888"}}>
             <Segment>
               <Item.Group>
                 <Item>

@@ -4,7 +4,6 @@ import EventDashboard from '../../features/events/EventDashboard/EventDashboard'
 import Navbar from '../../features/nav/Navbar/Navbar';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import EventDetailed from '../../features/events/EventDetailed/EventDetailed';
-import PeopleDashboard from '../../features/user/PeopleDashboard/PeopleDashboard';
 import UserDetailedPage from '../../features/user/UserDetailed/UserDetailedPage';
 import SettingsDashboard from '../../features/user/Settings/SettingsDashboard';
 import EventForm from '../../features/events/EventForm/EventForm';
@@ -41,7 +40,6 @@ class App extends Component {
                     <Route path="/events" component={EventDashboard}/>
                     <Route path="/event/:id" component={EventDetailed}/>
                     <Route path="/manage/:id" component={UserIsAuthenticated(EventForm)}/>
-                    <Route path="/people" component={UserIsAuthenticated(PeopleDashboard)}/>
                     <Route path="/profile/:id" component={UserIsAuthenticated(UserDetailedPage)}/>
                     <Route path="/settings" component={UserIsAuthenticated(SettingsDashboard)}/>
                     <Route path="/createEvent" component={UserIsAuthenticated(EventForm)}/>

@@ -13,7 +13,7 @@ class EventList extends Component {
               pageStart={0}
               loadMore={getNextEvents}
               hasMore={!loading && moreEvents} //this !loading makes it so that it doesn't activate on the initial load or else ill get duplicate data
-              initialLoad={false}
+              initialLoad={false} //handled in componentDidMount
               >
               {events && events.map(event => (
                 <EventListItem key={event.id} event={event}/>)
