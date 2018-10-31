@@ -7,11 +7,6 @@ class Home extends Component {
         <div className="ui inverted vertical masthead center aligned segment">
             <div className="ui text container">
               <h1 className="ui inverted stackable header">
-                <img
-                  className="ui image massive"
-                  src="/assets/h_logo.png"
-                  alt="logo"
-                />
                 <div className="content">Evently</div>
               </h1>
               <h2>Create and Join Events!</h2>

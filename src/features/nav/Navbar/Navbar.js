@@ -40,7 +40,6 @@ class Navbar extends Component {
       <Menu inverted fixed="top">
         <Container>
           <Menu.Item as={Link} to='/' header>
-            <img src="/assets/h_logo.png" alt="logo"/>
             Evently
           </Menu.Item>
           <Menu.Item as={NavLink} to='/events' name="Events"/> {/* Semantic UI components can act as other components. In this case NavLink. The to="events" is part of NavLink and not Sematnic UI. amazing. */}
