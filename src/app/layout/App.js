@@ -10,7 +10,6 @@ import EventForm from '../../features/events/EventForm/EventForm';
 import Home from '../../features/home/Home';
 import TestComponent from  '../../features/testarea/TestComponent'
 import { Provider } from 'react-redux';
-import { configureStore } from '../store/configureStore'
 import ModalManager from '../../features/modals/ModalManager';
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
 import ReduxToastr from 'react-redux-toastr';
