@@ -6,7 +6,7 @@
 #### Sign-in as will@gmail.com, password: will2019 (Fake account created for demo use). Or sign up for your own account, it's really easy!
 
 ## Stage
-#### The site is deployed and hosted using Netlify. Feel free to check it out here: [Evently](http://eventlyme.com)
+#### The site is deployed and hosted using Netlify.
 
 ## Improvements
 * Fix bugs where user chooses an event and changes pictures.
